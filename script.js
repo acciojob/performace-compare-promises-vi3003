@@ -1,4 +1,3 @@
-// Array of API URLs to fetch data from
 const apiUrls = [
   "https://jsonplaceholder.typicode.com/todos/1",
   "https://jsonplaceholder.typicode.com/todos/2",
@@ -12,4 +11,34 @@ const apiUrls = [
   "https://jsonplaceholder.typicode.com/todos/10",
 ];
 
-// You can write your code here
+function fetchData(url) {
+  return fetch(url)
+    .then(response => response.json())
+    .catch(error => console.error(`Error fetching data from ${url}: ${error}`));
+}
+
+// function to measure time taken for Promise.all
+function measurePromiseAll() {
+  const start = Date.now();
+  Promise.all(apiUrls.map(fetchData))
+    .then(() => {
+      const end = Date.now();
+      const timeTaken = end - start;
+      document.getElementById('output-all').innerHTML = `${timeTaken}ms`;
+    });
+}
+
+// function to measure time taken for Promise.any
+function measurePromiseAny() {
+  const start = Date.now();
+  Promise.any(apiUrls.map(fetchData))
+    .then(() => {
+      const end = Date.now();
+      const timeTaken = end - start;
+      document.getElementById('output-any').innerHTML = `${timeTaken}ms`;
+    });
+}
+
+// call the functions to measure performance
+measurePromiseAll();
+measurePromiseAny();
